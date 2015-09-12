@@ -2,7 +2,10 @@
 <head>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jquery.Jcrop.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="css/jquery.Jcrop.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+
 	<script language="Javascript">
 		jQuery(function($) {
       var $img = $('#target');
@@ -30,11 +33,7 @@
 		     // Redraw Canvas
 		     ctx.drawImage($img[0], c.x, c.y, c.w, c.h, 0, 0, 150, 150);
 	    }
-
-			function showCoords(c) {
-				console.log(c.x, c.y, c.x2, c.y2);
-			};
-
+			
 			function drawCanvas(event) {
 				var $img = $(event.target),
 						img = $img[0];
@@ -42,10 +41,12 @@
 			}
 
 			function updateCoords(c) {
+				/*
 				$('#x').val(c.x);
 				$('#y').val(c.y);
 				$('#w').val(c.w);
 				$('#h').val(c.h);
+				*/
 				ctx.drawImage($img[0], c.x, c.y, c.w, c.h, 0, 0, 150, 150);
 			}
 
@@ -62,14 +63,20 @@
 	<style>
 
 		#preview-pane {
-			display: block;
 			position: absolute;
 			z-index: 2000;
 			top: 10px;
 			right: 100px;
-			background-color: yellow;
+		}
+
+		.image-frame {
+			display: block;
+			width: 150px; height: 150px;
+			padding: 6px;
+			background-color: white;
 			border: 1px rgba(0,0,0,.4) solid;
 		  background-color: white;
+		  margin-bottom: 2px;
 
 		  -webkit-border-radius: 6px;
 		  -moz-border-radius: 6px;
@@ -80,9 +87,12 @@
 		  box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
 		}
 
-		canvas{
-			width: 150px; height: 150px;
-			padding: 6px;
+
+		#edited-pane {
+			position: absolute;
+			z-index: 2000;
+			top: 230px;
+			right: 100px;
 		}
 
 	</style>
@@ -91,21 +101,23 @@
 <div class="container">
 <div class="raw">
 <div class="span12">
-	<img id="target">
-
-	<form action="http://192.168.33.10/jcrop/image.php" method="POST" onsubmit="return checkCoords();">
-		<input type="text" id="x" name="x" />
-		<input type="text" id="y" name="y" />
-		<input type="text" id="w" name="w" />
-		<input type="text" id="h" name="h" />
-		<input type="submit" value="Crop image" style="float:left;width:98x;" />
-	</form>
-
-	<!-- <img id="source_img" /> -->
-	<div id="preview-pane">
-		<canvas id="edit_canvas" width="150" height="150">
-		</canvas>
+	<div class="form-group">
+		<label for="input-file">編集対象</label>
+		<input type="file" id="input-file" onchange="" />
 	</div>
+	<img id="target"/ >
+
+	<div id="preview-pane">
+		<canvas id="edit_canvas" width="150" height="150" class="image-frame">
+		</canvas>
+		<div><button class="btn btn-warning btn-block">送信</button></div>
+	</div>
+	
+
+	<div id="edited-pane">
+		<img id="transfered" class="image-frame" alt="アップロード後"/>
+	</div>
+
 </div>
 </div>
 </div>
